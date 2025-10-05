@@ -1,96 +1,81 @@
 "use client";
-
-import { useState } from "react";
 import Image from "next/image";
-import bmi from "@/assets/images/bmi.png";
-import calculator from "@/assets/images/calculator.png";
+import cylinder from "@/assets/images/cylinder.png";
+import { useState } from "react";
 import Footer from "@/components/footer";
 import Link from "next/link";
 
-export default function BMIPage() {
-  const [weight, setWeight] = useState("");
+export default function CylinderPage() {
+  const [radius, setRadius] = useState("");
   const [height, setHeight] = useState("");
-  const [bmiValue, setBmiValue] = useState("0.00");
-  const [status, setStatus] = useState("");
+  const [area, setArea] = useState("0.00");
 
-  const calculateBMI = () => {
-    if (!weight || !height || parseFloat(height) === 0) {
-      alert("กรุณาป้อนน้ำหนักและส่วนสูงให้ถูกต้อง");
+  const calculateArea = () => {
+    if (!radius || !height) {
+      alert("กรุณาป้อนรัศมีและสูง");
       return;
     }
-
-    const h = parseFloat(height) / 100; // แปลงเป็นเมตร
-    const w = parseFloat(weight);
-    const bmiValue = w / (h * h);
-    setBmiValue(bmiValue.toFixed(2));
-
-    // กำหนด status
-    let result = "";
-    if (bmiValue < 18.5) result = "ผอมเกินไป";
-    else if (bmiValue < 25) result = "สมส่วน";
-    else if (bmiValue < 30) result = "ท้วม / น้ำหนักเกิน";
-    else result = "อ้วน";
-    setStatus(result);
+    const r = parseFloat(radius);
+    const h = parseFloat(height);
+    const result = 2 * Math.PI * r * (r + h);
+    setArea(result.toFixed(2));
   };
 
-  const resetBMI = () => {
-    setWeight("");
+  const resetArea = () => {
+    setRadius("");
     setHeight("");
-    setBmiValue("0.00");
-    setStatus("");
+    setArea("0.00");
   };
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-gradient-to-br from-pink-100 via-purple-100 to-pink-200 py-10">
       <div className="w-full max-w-lg bg-white/90 backdrop-blur-md p-10 rounded-3xl shadow-xl flex flex-col items-center">
-        <Image src={calculator} alt="calculator" width={100} className="mb-3" />
         <h1 className="text-3xl font-extrabold text-pink-600 mb-1 text-center drop-shadow">
           Varity Calculator v1.0
         </h1>
         <h2 className="text-xl text-pink-500 mb-6 text-center">
-          โปรแกรมคำนวณ BMI
+          คำนวณพื้นที่ทรงกระบอก
         </h2>
 
         <div className="w-full flex flex-col items-center border border-gray-200 rounded-xl p-6 shadow-sm">
-          <Image src={bmi} alt="BMI" width={50} className="mb-3" />
+           <Image src={cylinder} alt="cylinder" width={50} className="mb-3" />
           <h3 className="text-lg text-pink-600 font-semibold mb-5">
-            คำนวณค่า BMI ของคุณ
+            หาพื้นที่ทรงกระบอก
           </h3>
-
-          {/* Input น้ำหนัก */}
+          {/* Radius */}
           <div className="w-full flex flex-col mb-3">
-            <label className="mb-1 font-medium text-gray-700">น้ำหนัก (kg)</label>
+            <label className="mb-1 font-medium text-gray-700">รัศมี (r)</label>
             <input
               type="number"
-              value={weight}
-              onChange={(e) => setWeight(e.target.value)}
+              value={radius}
+              onChange={(e) => setRadius(e.target.value)}
+              placeholder="เช่น 5"
               className="border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 transition"
-              placeholder="เช่น 60"
             />
           </div>
 
-          {/* Input ส่วนสูง */}
+          {/* Height */}
           <div className="w-full flex flex-col mb-5">
-            <label className="mb-1 font-medium text-gray-700">ส่วนสูง (cm)</label>
+            <label className="mb-1 font-medium text-gray-700">สูง (h)</label>
             <input
               type="number"
               value={height}
               onChange={(e) => setHeight(e.target.value)}
+              placeholder="เช่น 10"
               className="border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 transition"
-              placeholder="เช่น 170"
             />
           </div>
 
           {/* Buttons */}
           <div className="w-full flex flex-col sm:flex-row gap-3">
             <button
-              onClick={calculateBMI}
+              onClick={calculateArea}
               className="flex-1 text-lg bg-pink-500 hover:bg-pink-600 text-white font-semibold py-2 rounded-lg transition shadow-md"
             >
               คำนวณ
             </button>
             <button
-              onClick={resetBMI}
+              onClick={resetArea}
               className="flex-1 text-lg bg-amber-500 hover:bg-amber-600 text-white font-semibold py-2 rounded-lg transition shadow-md"
             >
               ยกเลิก
@@ -99,23 +84,17 @@ export default function BMIPage() {
 
           {/* Result */}
           <div className="mt-6 text-center text-gray-800 text-xl font-medium">
-            <span>BMI: </span>
-            <span className="text-4xl font-bold text-red-600 mx-2">{bmiValue}</span>
+            <span>พื้นที่: </span>
+            <span className="text-4xl font-bold text-red-600 mx-2">{area}</span>
           </div>
-          {status && (
-            <div className="mt-2 text-center text-lg font-semibold text-pink-700">
-              สถานะ: {status}
-            </div>
-          )}
         </div>
 
-        {/* Back to Menu */}
         <Link
-          href="/menu"
+          href="/shape"
           className="mt-6 inline-flex items-center px-5 py-2 bg-pink-100 hover:bg-pink-200 text-pink-700 font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
         >
           <span className="mr-2 text-2xl">⬅️</span>
-          กลับไปหน้าเมนู
+          กลับไปหน้า Shape
         </Link>
       </div>
 

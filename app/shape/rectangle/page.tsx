@@ -1,86 +1,79 @@
 "use client";
-
 import Image from "next/image";
-import calculator from "./../../assets/images/calculator.png";
-import money from "./../../assets/images/money.png";
+import rectangle from "@/assets/images/rectangle.png";
 import { useState } from "react";
-import Link from "next/link";
 import Footer from "@/components/footer";
+import Link from "next/link";
 
-export default function Page() {
-  const [moneyInput, setMoneyInput] = useState("");
-  const [person, setPerson] = useState("");
-  const [moneyshare, setMoneyShare] = useState("0.00");
+export default function RectanglePage() {
+  const [width, setWidth] = useState("");
+  const [length, setLength] = useState("");
+  const [area, setArea] = useState("0.00");
 
-  const handleCalClick = () => {
-    if (moneyInput === "" || person === "" || person === "0") {
-      alert("กรุณาป้อนจำนวนเงินและจำนวนคนก่อนคำนวณ และจำนวนคนต้องไม่เป็น 0");
+  const calculateArea = () => {
+    if (!width || !length) {
+      alert("กรุณาป้อนความกว้างและความยาว");
       return;
     }
-
-    const result = parseFloat(moneyInput) / parseFloat(person);
-    setMoneyShare(result.toFixed(2));
+    const result = parseFloat(width) * parseFloat(length);
+    setArea(result.toFixed(2));
   };
 
-  const handleCalCancel = () => {
-    setMoneyInput("");
-    setPerson("");
-    setMoneyShare("0.00");
+  const resetArea = () => {
+    setWidth("");
+    setLength("");
+    setArea("0.00");
   };
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-gradient-to-br from-pink-100 via-purple-100 to-pink-200 py-10">
       <div className="w-full max-w-lg bg-white/90 backdrop-blur-md p-10 rounded-3xl shadow-xl flex flex-col items-center">
-        <Image src={calculator} alt="calculator" width={100} className="mb-3" />
         <h1 className="text-3xl font-extrabold text-pink-600 mb-1 text-center drop-shadow">
           Varity Calculator v1.0
         </h1>
         <h2 className="text-xl text-pink-500 mb-6 text-center">
-          โปรแกรมคำนวณแชร์เงิน
+          คำนวณพื้นที่สี่เหลี่ยม
         </h2>
 
         <div className="w-full flex flex-col items-center border border-gray-200 rounded-xl p-6 shadow-sm">
-          <Image src={money} alt="money" width={50} className="mb-3" />
+          <Image src={rectangle} alt="rectangle" width={50} className="mb-3" />
           <h3 className="text-lg text-pink-600 font-semibold mb-5">
-            แชร์เงินกันเถอะ
+            หาพื้่นที่สี่เหลี่ยม
           </h3>
-
-          {/* Input Money */}
+          {/* Width */}
           <div className="w-full flex flex-col mb-3">
-            <label className="mb-1 font-medium text-gray-700">
-              ป้อนเงิน (บาท)
-            </label>
+            <label className="mb-1 font-medium text-gray-700">ความกว้าง</label>
             <input
               type="number"
-              value={moneyInput}
-              onChange={(e) => setMoneyInput(e.target.value)}
+              value={width}
+              onChange={(e) => setWidth(e.target.value)}
+              placeholder="เช่น 5"
               className="border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 transition"
-              placeholder="จำนวนเงินทั้งหมด"
             />
           </div>
 
-          {/* Input Person */}
+          {/* Length */}
           <div className="w-full flex flex-col mb-5">
-            <label className="mb-1 font-medium text-gray-700">ป้อนคน</label>
+            <label className="mb-1 font-medium text-gray-700">ความยาว</label>
             <input
               type="number"
-              value={person}
-              onChange={(e) => setPerson(e.target.value)}
+              value={length}
+              onChange={(e) => setLength(e.target.value)}
+              placeholder="เช่น 10"
               className="border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 transition"
-              placeholder="จำนวนคนที่จะแชร์"
             />
           </div>
 
           {/* Buttons */}
           <div className="w-full flex flex-col sm:flex-row gap-3">
             <button
-              onClick={handleCalClick}
+              onClick={calculateArea}
               className="flex-1 text-lg bg-pink-500 hover:bg-pink-600 text-white font-semibold py-2 rounded-lg transition shadow-md"
             >
               คำนวณ
             </button>
             <button
-              onClick={handleCalCancel}
+              onClick={resetArea}
               className="flex-1 text-lg bg-amber-500 hover:bg-amber-600 text-white font-semibold py-2 rounded-lg transition shadow-md"
             >
               ยกเลิก
@@ -89,21 +82,17 @@ export default function Page() {
 
           {/* Result */}
           <div className="mt-6 text-center text-gray-800 text-xl font-medium">
-            <span>หารกันคนละ </span>
-            <span className="text-4xl font-bold text-red-600 mx-3">
-              {moneyshare}
-            </span>
-            <span>บาท</span>
+            <span>พื้นที่: </span>
+            <span className="text-4xl font-bold text-red-600 mx-2">{area}</span>
           </div>
         </div>
 
-        {/* Back to Menu */}
         <Link
-          href="/menu"
+          href="/shape"
           className="mt-6 inline-flex items-center px-5 py-2 bg-pink-100 hover:bg-pink-200 text-pink-700 font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
         >
           <span className="mr-2 text-2xl">⬅️</span>
-          กลับไปหน้าเมนู
+          กลับไปหน้า Shape
         </Link>
       </div>
 
