@@ -3,8 +3,10 @@ import Image from "next/image";
 import calculator from "../assets/images/calculator.png";
 import Footer from "../components/footer";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 export default function HomePage() {
-  
+  //สร้างตัวแปร router เพื่อเรียกใช้คำสังสำหรับการ redirect หน้า 
+  const router = useRouter();
   // สร้างตัวแปร state สำหรับเก็บรหัสเข้าใช้งาน
   const [ucode, setUcode] = useState("");
 
@@ -16,7 +18,7 @@ export default function HomePage() {
     }
     if (ucode.toLowerCase() == "sau") {
       //เปิดไป component page /menu
-      window.location.href = "/menu";
+      router.push("/menu");
     }else(
       alert("โค้ดไม่ถูกต้อง")
     )
